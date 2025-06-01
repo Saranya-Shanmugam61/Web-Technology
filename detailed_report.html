@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Detailed Report{% endblock %}
+
+{% block container_class %}detailed-report-container{% endblock %}
+
+{% block content %}
+    <h1>Detailed Progress Report</h1>
+    <p class="subtitle">Analyze your long-term trends and detailed health metrics.</p>
+
+    <div class="report-sections">
+        <div class="report-card">
+            <h3>Weekly Calorie Trend</h3>
+            <p><em>(Placeholder for a chart showing calorie intake over the last 7 days)</em></p>
+            <canvas id="calorieTrendChart" width="400" height="200"></canvas>
+            <p>This chart will show your daily total calorie consumption over a selected period.</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Macronutrient Distribution</h3>
+            <p><em>(Placeholder for a pie/donut chart showing average daily protein, carb, fat percentage)</em></p>
+            <canvas id="macroDistributionChart" width="400" height="200"></canvas>
+            <p>Visualize your average macronutrient intake to see if you're hitting your targets.</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Workout Intensity Over Time</h3>
+            <p><em>(Placeholder for a bar or line chart showing calories burned per workout type)</em></p>
+            <canvas id="workoutIntensityChart" width="400" height="200"></canvas>
+            <p>Track how your workout intensity and calories burned evolve over weeks.</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Progress Against Goals</h3>
+            <p><em>(Placeholder for a summary of your goals and current progress towards them)</em></p>
+            <ul>
+                <li><strong>Weight Goal:</strong> Current: XX kg, Target: YY kg</li>
+                <li><strong>Protein Goal:</strong> Average Daily: Z g, Target: W g</li>
+                <li><strong>Workout Frequency:</strong> Last 7 days: A workouts, Goal: B workouts</li>
+            </ul>
+            <p>A quick summary of your key health and fitness objectives.</p>
+        </div>
+    </div>
+
+    <p style="margin-top: 40px; text-align: center; color: #777;">
+        * This page is currently a template. Advanced charts and dynamic data loading would be implemented here using JavaScript libraries like Chart.js and fetching data from the backend.
+    </p>
+
+{% endblock %}
+
+{% block body_extra %}
+    {# Example of how you might include Chart.js and a script for it #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Placeholder for Chart.js implementation
+            // You would fetch actual data from your Flask backend using AJAX
+            // Example data for demonstration:
+            const calorieData = {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [{
+                    label: 'Calories Consumed (kcal)',
+                    data: [2000, 2200, 1900, 2100, 2300, 1800, 2050],
+                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 1,
+                    tension: 0.4,
+                    fill: false
+                }]
+            };
+
+            const macroData = {
+                labels: ['Protein', 'Carbs', 'Fats'],
+                datasets: [{
+                    label: 'Macronutrient Distribution',
+                    data: [30, 50, 20], // Example percentages
+                    backgroundColor: ['#2ecc71', '#f1c40f', '#e74c3c'], // Green, Yellow, Red
+                    hoverOffset: 4
+                }]
+            };
+
+            const workoutData = {
+                labels: ['Cardio', 'Strength', 'Yoga', 'HIIT'],
+                datasets: [{
+                    label: 'Calories Burned (kcal)',
+                    data: [400, 350, 150, 500],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.6)',
+                        'rgba(46, 204, 113, 0.6)',
+                        'rgba(241, 196, 15, 0.6)',
+                        'rgba(231, 76, 60, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(231, 76, 60, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+
+            // Create Calorie Trend Chart
+            const calorieTrendCtx = document.getElementById('calorieTrendChart');
+            if (calorieTrendCtx) {
+                new Chart(calorieTrendCtx, {
+                    type: 'line',
+                    data: calorieData,
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Calories (kcal)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Weekly Calorie Consumption'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Create Macronutrient Distribution Chart
+            const macroDistributionCtx = document.getElementById('macroDistributionChart');
+            if (macroDistributionCtx) {
+                new Chart(macroDistributionCtx, {
+                    type: 'pie', // Or 'doughnut'
+                    data: macroData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Average Macronutrient Distribution'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Create Workout Intensity Chart
+            const workoutIntensityCtx = document.getElementById('workoutIntensityChart');
+            if (workoutIntensityCtx) {
+                new Chart(workoutIntensityCtx, {
+                    type: 'bar',
+                    data: workoutData,
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Calories Burned (kcal)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Calories Burned by Workout Type'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
