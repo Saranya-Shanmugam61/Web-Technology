@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Suggestions - NutriSync Routiner{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="card-heading">Suggestions for a Healthier You</h1>
+    <p class="subtitle">Discover balanced meal ideas and effective workout routines tailored to help you reach your goals.</p>
+</div>
+
+<div class="grid-container">
+    <div class="card">
+        <h2>Healthy Food Suggestions</h2>
+        {% if food_suggestions %}
+            <div class="suggestion-list">
+                {% for food in food_suggestions %}
+                <div class="suggestion-item">
+                    <h3>{{ food.name }}</h3>
+                    <p>{{ food.description }}</p>
+                    <p><strong>Calories:</strong> {{ food.calories }}</p>
+                    <p><strong>Macros:</strong> {{ food.macros }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No food suggestions available at the moment. Check back soon!</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Effective Exercise Routines</h2>
+        {% if exercise_suggestions %}
+            <div class="suggestion-list">
+                {% for exercise in exercise_suggestions %}
+                <div class="suggestion-item">
+                    <h3>{{ exercise.name }}</h3>
+                    <p>{{ exercise.description }}</p>
+                    <p><strong>Focus:</strong> {{ exercise.focus }}</p>
+                    <p><strong>Estimated Calories Burned:</strong> {{ exercise.calories_burned }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No exercise suggestions available at the moment. Check back soon!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
