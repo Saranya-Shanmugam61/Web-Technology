@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Routines & Progress{% endblock %}
+
+{% block container_class %}progress-container{% endblock %}
+
+{% block content %}
+    <h1>Your Daily Routines & Progress</h1>
+    <p class="subtitle">Stay on track with your fitness and nutrition journey.</p>
+
+    <div class="progress-sections">
+        <div class="progress-card food-schedule-card">
+            <h3>Food Schedule</h3>
+            <p>Plan and track your daily meals.</p>
+            <a href="{{ url_for('food_schedule') }}" class="btn">Go to Food Schedule</a>
+        </div>
+        <div class="progress-card exercise-log-card">
+            <h3>Exercise Log</h3>
+            <p>Record your workouts and track activity.</p>
+            <a href="{{ url_for('exercise_log') }}" class="btn">Go to Exercise Log</a>
+        </div>
+        <div class="progress-card nutrient-snapshot-card">
+            <h3>Nutrient Snapshot</h3>
+            <p>See your daily nutrient intake at a glance.</p>
+            <a href="{{ url_for('nutrient_snapshot') }}" class="btn">Go to Nutrient Snapshot</a>
+        </div>
+        <div class="progress-card detailed-report-card">
+            <h3>Detailed Report</h3>
+            <p>Dive deep into your progress with comprehensive reports.</p>
+            <a href="{{ url_for('detailed_report') }}" class="btn">View Detailed Report</a>
+        </div>
+    </div>
+{% endblock %}
