@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Exercise Log{% endblock %}
+
+{% block container_class %}exercise-log-container{% endblock %}
+
+{% block content %}
+    <h1>Your Exercise Log</h1>
+    <p class="subtitle">Record your workouts and track your activity levels.</p>
+
+    <div class="date-selector">
+        <label for="progressDate">Select Date:</label>
+        <input type="date" id="progressDate" name="progressDate" value="{{ selected_date }}" onchange="changeExerciseLogDate()">
+    </div>
+
+    <div class="progress-sections">
+        <div class="progress-card workout-log-card">
+            <h3>Morning Workouts</h3>
+            <ul class="workout-list">
+                {% for entry in workout_entries if entry.workout_type == 'Morning Workout' %}
+                    <li>{{ entry.workout_type }}: {{ entry.duration_minutes }} mins ({{ entry.calories_burned }} kcal burned)</li>
+                {% else %}
+                    <li>No morning workouts logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Evening Workouts</h3>
+            <ul class="workout-list">
+                {% for entry in workout_entries if entry.workout_type == 'Evening Workout' %}
+                    <li>{{ entry.workout_type }}: {{ entry.duration_minutes }} mins ({{ entry.calories_burned }} kcal burned)</li>
+                {% else %}
+                    <li>No evening workouts logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Other Workouts</h3>
+            <ul class="workout-list">
+                {% for entry in workout_entries if entry.workout_type != 'Morning Workout' and entry.workout_type != 'Evening Workout' %}
+                    <li>{{ entry.workout_type }}: {{ entry.duration_minutes }} mins ({{ entry.calories_burned }} kcal burned)</li>
+                {% else %}
+                    <li>No other workouts logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <button class="btn btn-small" onclick="openModal('addWorkoutModalOverlay')">Add Workout</button>
+        </div>
+    </div>
+
+    {# --- Modal for Adding Workout Entry --- #}
+    <div class="modal-overlay" id="addWorkoutModalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('addWorkoutModalOverlay')">&times;</span>
+            <h2>Add Workout</h2>
+            <form method="POST" action="{{ url_for('add_workout_entry') }}">
+                <input type="hidden" name="entry_date" value="{{ selected_date }}">
+                <div class="form-group">
+                    <label for="workoutType">Workout Type:</label>
+                    <select id="workoutType" name="workout_type" required>
+                        <option value="Morning Workout">Morning Workout</option>
+                        <option value="Evening Workout">Evening Workout</option>
+                        <option value="Cardio">Cardio</option>
+                        <option value="Strength Training">Strength Training</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="durationMinutes">Duration (minutes):</label>
+                    <input type="number" id="durationMinutes" name="duration_minutes" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="caloriesBurned">Calories Burned (kcal):</label>
+                    <input type="number" id="caloriesBurned" name="calories_burned" min="0" required>
+                </div>
+                <button type="submit" class="btn">Add Workout</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body_extra %}
+    <script>
+        // Function to open a modal (specific to this page)
+        function openModal(modalId) {
+            const modalOverlay = document.getElementById(modalId);
+            if (modalOverlay) {
+                modalOverlay.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Function to close a modal (specific to this page)
+        function closeModal(modalId) {
+            const modalOverlay = document.getElementById(modalId);
+            if (modalOverlay) {
+                modalOverlay.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Function to change the date and reload exercise log data
+        function changeExerciseLogDate() {
+            const selectedDate = document.getElementById('progressDate').value;
+            window.location.href = "{{ url_for('exercise_log') }}?date=" + selectedDate;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set the date picker to the current selected date from Flask
+            const progressDateInput = document.getElementById('progressDate');
+            if (progressDateInput) {
+                progressDateInput.value = "{{ selected_date }}";
+            }
+        });
+    </script>
+{% endblock %}
