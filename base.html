@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriSync Routiner - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}"> {# Optional: Add a favicon.ico to your static folder #}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="logo">NutriSync</a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('progress') }}">Progress</a></li>
+                        <li><a href="{{ url_for('notifications') }}">Notifications</a></li>
+                        <li><a href="{{ url_for('suggest') }}">Suggest</a></li> {# Added the Suggest link here #}
+                    {% endif %}
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+                {% else %}
+                    <button id="loginBtn" class="btn">Login</button>
+                    <button id="registerBtn" class="btn">Register</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <ul class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </ul>
+
+    <main class="container {% block container_class %}{% endblock %}">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{ current_year }} NutriSync Routiner. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {# Include login/register modal partial here. Make sure this file exists in your templates folder. #}
+    {% include 'login_register_modal.html' %}
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block body_extra %}{% endblock %}
+</body>
+</html>
