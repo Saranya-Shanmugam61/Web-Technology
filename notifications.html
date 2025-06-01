@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block container_class %}notifications-container{% endblock %}
+
+{% block content %}
+    <h1>Your Notifications</h1>
+    <p class="subtitle">Stay updated with important alerts and reminders.</p>
+
+    <div class="notification-list-section">
+        {% if notifications %}
+            <ul class="notification-list">
+                {% for notification in notifications %}
+                    <li class="notification-item {% if not notification.read %}unread{% else %}read{% endif %}">
+                        <div class="notification-icon">
+                            {% if not notification.read %}
+                                🔔
+                            {% else %}
+                                ✅
+                            {% endif %}
+                        </div>
+                        <div class="notification-content">
+                            <p>{{ notification.message }}</p>
+                            <span class="notification-time">{{ notification.timestamp | default('Just now', true) }}</span>
+                        </div>
+                        <div class="notification-actions">
+                            {% if not notification.read %}
+                                <button class="btn btn-small btn-mark-read" data-id="{{ notification.id }}">Mark as Read</button>
+                            {% endif %}
+                            <button class="btn btn-small btn-secondary btn-delete" data-id="{{ notification.id }}">Delete</button>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-notifications">You have no new notifications.</p>
+        {% endif %}
+    </div>
+
+    <style>
+        .notifications-container {
+            max-width: 800px;
+        }
+        .notification-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        .notification-item {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: transform 0.2s ease;
+        }
+        .notification-item:hover {
+            transform: translateY(-3px);
+        }
+        .notification-item.unread {
+            border-left: 5px solid #3498db; /* Highlight unread notifications */
+            background-color: #f7fcff;
+        }
+        .notification-item.read {
+            opacity: 0.8;
+        }
+        .notification-icon {
+            font-size: 1.8em;
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+        .notification-content {
+            flex-grow: 1; /* Allow content to take available space */
+        }
+        .notification-content p {
+            margin: 0;
+            font-weight: 500;
+            color: #333;
+        }
+        .notification-content .notification-time {
+            font-size: 0.85em;
+            color: #888;
+            display: block;
+            margin-top: 5px;
+        }
+        .notification-actions {
+            flex-shrink: 0;
+            display: flex;
+            gap: 8px;
+        }
+        .btn-mark-read {
+            background-color: #2ecc71; /* Green for mark as read */
+        }
+        .btn-mark-read:hover {
+            background-color: #27ae60;
+        }
+        .btn-delete {
+            background-color: #e74c3c; /* Red for delete */
+        }
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+        .no-notifications {
+            text-align: center;
+            color: #666;
+            margin-top: 50px;
+            font-size: 1.1em;
+        }
+    </style>
+
+    {% block body_extra %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Dummy event listeners for buttons - in a real app, these would send AJAX requests
+                document.querySelectorAll('.btn-mark-read').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const notificationId = this.dataset.id;
+                        alert('Marking notification ' + notificationId + ' as read (functionality not implemented yet).');
+                        // In a real app: send AJAX request to Flask to update notification status
+                        // Then visually update the item or reload the page
+                        this.closest('.notification-item').classList.remove('unread');
+                        this.closest('.notification-item').classList.add('read');
+                        this.remove(); // Remove the "Mark as Read" button
+                    });
+                });
+
+                document.querySelectorAll('.btn-delete').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const notificationId = this.dataset.id;
+                        if (confirm('Are you sure you want to delete notification ' + notificationId + '?')) {
+                            alert('Deleting notification ' + notificationId + ' (functionality not implemented yet).');
+                            // In a real app: send AJAX request to Flask to delete notification
+                            this.closest('.notification-item').remove(); // Remove item from DOM
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
