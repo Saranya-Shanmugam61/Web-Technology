@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Nutrient Snapshot{% endblock %}
+
+{% block container_class %}nutrient-snapshot-container{% endblock %}
+
+{% block content %}
+    <h1>Your Nutrient Snapshot</h1>
+    <p class="subtitle">A quick overview of your daily nutrient intake and calories burned.</p>
+
+    <div class="calendar-nav">
+        <button class="nav-arrow" onclick="changeNutrientSnapshotDate('{{ prev_date }}')">&lt; Prev Day</button>
+        <div class="date-selector">
+            <label for="nutrientSnapshotDate">Date:</label>
+            <input type="date" id="nutrientSnapshotDate" name="nutrientSnapshotDate" value="{{ selected_date }}" onchange="changeNutrientSnapshotDate(this.value)">
+        </div>
+        <button class="nav-arrow" onclick="changeNutrientSnapshotDate('{{ next_date }}')">Next Day &gt;</button>
+    </div>
+
+    <div class="progress-sections">
+        <div class="progress-card nutrient-summary-card">
+            <h3>Daily Nutritional Summary ({{ selected_date }})</h3>
+            <p><strong>Total Calories Consumed:</strong> {{ nutrient_summary.total_calories }} kcal</p>
+            <p><strong>Total Calories Burned (Workouts):</strong> {{ total_calories_burned_from_workouts }} kcal</p>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #eee;">
+            <p><strong>Net Calories:</strong> {{ nutrient_summary.total_calories - total_calories_burned_from_workouts }} kcal</p>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #eee;">
+            <p><strong>Total Protein:</strong> {{ "%.2f"|format(nutrient_summary.total_proteins) }} g</p>
+            <p><strong>Total Carbs:</strong> {{ "%.2f"|format(nutrient_summary.total_carbs) }} g</p>
+            <p><strong>Total Fats:</strong> {{ "%.2f"|format(nutrient_summary.total_fats) }} g</p>
+
+            <a href="{{ url_for('detailed_report') }}" class="btn btn-small">View Detailed Report</a>
+        </div>
+
+        <div class="progress-card daily-log-summary-card">
+            <h3>Meals Logged</h3>
+            {% if food_entries %}
+                <ul class="meal-list">
+                    {% for entry in food_entries %}
+                        <li>{{ entry.meal_time }}: {{ entry.food_item }} ({{ entry.calories }} kcal)</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No meals logged for this date.</p>
+            {% endif %}
+
+            <h3>Workouts Logged</h3>
+            {% if workout_entries %}
+                <ul class="workout-list">
+                    {% for entry in workout_entries %}
+                        <li>{{ entry.workout_type }}: {{ entry.duration_minutes }} mins</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No workouts logged for this date.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <p style="margin-top: 40px; color: #777;">This snapshot provides a daily overview. Click "View Detailed Report" for more in-depth analysis and charts.</p>
+
+{% endblock %}
+
+{% block body_extra %}
+    <script>
+        // Function to change the date and reload nutrient snapshot data
+        function changeNutrientSnapshotDate(newDate) {
+            window.location.href = "{{ url_for('nutrient_snapshot') }}?date=" + newDate;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set the date picker to the current selected date from Flask
+            const nutrientSnapshotDateInput = document.getElementById('nutrientSnapshotDate');
+            if (nutrientSnapshotDateInput) {
+                nutrientSnapshotDateInput.value = "{{ selected_date }}";
+            }
+        });
+    </script>
+{% endblock %}
