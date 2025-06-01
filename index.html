@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block container_class %}{% endblock %} {# No special container class for home #}
+
+{% block content %}
+    <div class="hero">
+        <h1>Achieve Your Health Goals</h1>
+        <p>NutriSync Routiner helps you track your nutrition, log workouts, and monitor your progress with ease.</p>
+        <div class="hero-buttons">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('progress') }}" class="btn">View Your Progress</a>
+            {% else %}
+                <button id="registerBtnHero" class="btn" onclick="document.getElementById('registerBtn').click()">Get Started Now</button>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Additional content for the home page can go here if desired #}
+    <section class="info-section">
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">Why Choose NutriSync?</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+            <div class="info-card">
+                <h3>Personalized Tracking</h3>
+                <p>Tailor your meal plans and workout routines to fit your unique goals, whether it's bulking, weight loss, or maintenance.</p>
+            </div>
+            <div class="info-card">
+                <h3>Easy Logging</h3>
+                <p>Quickly log your food intake and exercise sessions with a user-friendly interface, saving you time and effort.</p>
+            </div>
+            <div class="info-card">
+                <h3>Insightful Reports</h3>
+                <p>Gain valuable insights into your progress with detailed reports and nutrient breakdowns, helping you make informed decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .info-section {
+            padding: 40px 0;
+            background-color: #f9fbfb;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .info-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            width: 300px;
+            transition: transform 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        .info-card h3 {
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .info-card p {
+            color: #555;
+            font-size: 0.95em;
+        }
+        .hero-buttons {
+            margin-top: 30px;
+        }
+        .hero-buttons .btn {
+            padding: 12px 30px;
+            font-size: 1.1em;
+        }
+    </style>
+
+{% endblock %}
+
+{% block body_extra %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // This is already handled by script.js but added here for redundancy if needed.
+            // If the URL has 'showLoginModal=true' or 'showRegisterModal=true', open the modal
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('showLoginModal') === 'true') {
+                openModal('loginRegisterModalOverlay');
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            } else if (urlParams.get('showRegisterModal') === 'true') {
+                openModal('loginRegisterModalOverlay');
+                document.getElementById('registerForm').style.display = 'block';
+                document.getElementById('loginForm').style.display = 'none';
+            }
+        });
+    </script>
+{% endblock %}
