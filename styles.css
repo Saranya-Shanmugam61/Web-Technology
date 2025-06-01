@@ -1,0 +1,716 @@
+/* --- Color Palette Variables (for easier changes) --- */
+:root {
+    --primary-purple: #673ab7;    /* Deep Purple */
+    --secondary-purple: #9c27b0;  /* Medium Purple */
+    --light-purple: #ede7f6;      /* Very Light Purple */
+    --accent-purple: #d1c4e9;     /* A slightly muted light purple */
+    --text-dark: #212121;         /* Very dark gray for main text */
+    --text-medium: #424242;       /* Medium dark gray */
+    --text-light: #757575;        /* Light gray for secondary text */
+    --background-light: #f5f5f5;  /* Off-white for general background */
+    --card-background: #ffffff;   /* Pure white for cards */
+    --border-light: #e0e0e0;      /* Light gray border */
+    --shadow-color: rgba(0, 0, 0, 0.08); /* Subtle shadow color */
+    --hover-shadow-color: rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --danger-bg: #f8d7da;
+    --danger-text: #721c24;
+    --info-bg: #d1ecf1;
+    --info-text: #0c5460;
+}
+
+
+/* Basic Resets & Body Styles */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif; /* Modern, clean font */
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--background-light); /* Light background */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* General Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Header Styles */
+header {
+    background-color: var(--card-background); /* White background for header */
+    color: var(--text-dark);
+    padding: 1rem 0;
+    box-shadow: 0 4px 12px var(--shadow-color); /* Subtle shadow for depth */
+    position: sticky; /* Makes header stick to the top when scrolling */
+    top: 0;
+    z-index: 999; /* Ensure header is above other content */
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Adjust padding for header container */
+    max-width: 1200px; /* Match main container width */
+    margin: 0 auto;
+    background-color: transparent; /* Override white background */
+    box-shadow: none; /* Remove shadow */
+}
+
+header .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-purple); /* Primary purple for the logo */
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Use flexbox for nav links */
+}
+
+header nav ul li {
+    margin-left: 25px;
+}
+
+header nav ul li a {
+    color: var(--text-medium); /* Medium gray for navigation links */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+header nav ul li a:hover {
+    color: var(--secondary-purple); /* Secondary purple on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* General Button Styles */
+.btn {
+    background-color: var(--secondary-purple); /* Secondary purple for buttons */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px; /* Slightly more rounded */
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: var(--primary-purple); /* Darker purple on hover */
+    transform: translateY(-3px); /* More pronounced lift */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Subtle shadow on hover */
+}
+
+.btn-secondary {
+    background-color: var(--text-light); /* Light gray for secondary buttons */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-medium); /* Darker gray on hover */
+}
+
+.btn-small {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border-radius: 6px;
+}
+
+/* Flash Messages */
+.flash-messages {
+    list-style: none;
+    padding: 15px;
+    margin: 20px auto 0 auto;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.flash-messages li {
+    padding: 10px;
+    margin-bottom: 5px; /* Space between multiple messages */
+}
+
+.flash-messages .success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-text);
+}
+
+.flash-messages .danger {
+    background-color: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-text);
+}
+
+.flash-messages .info {
+    background-color: var(--info-bg);
+    color: var(--info-text);
+    border: 1px solid var(--info-text);
+}
+
+
+/* Main Content Area */
+main.container {
+    padding-top: 40px; /* More space from header */
+    padding-bottom: 60px; /* More space before footer */
+    flex-grow: 1; /* Allows container to grow and push footer down */
+    background-color: var(--background-light); /* Ensure main content background is light */
+    border-radius: 10px; /* Rounded corners for the main content area if it's a distinct box */
+    box-shadow: 0 0 15px rgba(0,0,0,0.05); /* Subtle shadow for the whole content area */
+    margin-top: 20px; /* Space from flash messages/header */
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--primary-purple); /* Deep purple for footer */
+    color: white;
+    text-align: center;
+    padding: 1.2rem 0;
+    width: 100%;
+    box-shadow: 0 -4px 12px var(--shadow-color);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--card-background); /* White background for modal content */
+    padding: 30px;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 8px 30px var(--hover-shadow-color); /* Stronger shadow for modals */
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+    transform: translateY(-20px); /* Initial subtle lift effect */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-overlay.visible .modal-content {
+    transform: translateY(0); /* Animate to normal position */
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--text-dark);
+}
+
+.modal-content h2 {
+    color: var(--primary-purple); /* Primary purple for modal titles */
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+/* Form Styling (used in modals and general pages) */
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-medium);
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+    width: calc(100% - 24px); /* Adjust for padding and border */
+    padding: 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--secondary-purple);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.2); /* Purple focus ring */
+    outline: none;
+}
+
+.form-group button[type="submit"] {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.switch-form-text {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-light);
+}
+
+.switch-form-text a {
+    color: var(--secondary-purple);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.switch-form-text a:hover {
+    text-decoration: underline;
+}
+
+/* --- Specific Page Styles (Enhanced for neatness and hover effects) --- */
+
+h1 {
+    color: var(--primary-purple);
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-medium);
+    margin-bottom: 40px;
+    font-size: 1.1em;
+}
+
+/* --- Styles for Suggestion Page (suggest.html) --- */
+
+.card-heading {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    color: var(--primary-purple);
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--text-medium);
+    margin-bottom: 40px;
+}
+
+.suggestion-list {
+    margin-top: 20px;
+}
+
+.suggestion-item {
+    background-color: var(--background-light); /* Lighter background for individual items */
+    border: 1px solid var(--accent-purple); /* Subtle purple border */
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.suggestion-item:hover {
+    transform: translateY(-3px); /* Lift on hover */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.suggestion-item h3 {
+    color: var(--secondary-purple); /* Secondary purple for suggestion titles */
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
+
+.suggestion-item p {
+    color: var(--text-medium);
+    margin-bottom: 5px;
+}
+
+.suggestion-item p strong {
+    color: var(--text-dark); /* Darker text for emphasized info */
+}
+
+/* Hero Section (for index.html) */
+.hero {
+    background: linear-gradient(rgba(106, 13, 173, 0.7), rgba(156, 39, 176, 0.7)), url('https://placehold.co/1200x400/673ab7/ffffff?text=NutriSync+Routiner') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.hero h1 {
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    color: white; /* Ensure hero text is white */
+}
+
+.hero p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}
+
+.hero-buttons .btn {
+    background-color: var(--card-background); /* White button on hero */
+    color: var(--primary-purple); /* Purple text on white button */
+    font-size: 1.1em;
+    padding: 12px 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.hero-buttons .btn:hover {
+    background-color: var(--light-purple); /* Light purple on hover */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+
+/* General Card/Box Styling */
+.card {
+    background-color: var(--card-background);
+    border-radius: 12px; /* Consistent rounded corners */
+    box-shadow: 0 4px 15px var(--shadow-color); /* Subtle shadow for cards */
+    padding: 25px;
+    margin-bottom: 25px; /* Space between cards */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Hover effect */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 8px 25px var(--hover-shadow-color); /* Enhanced shadow on hover */
+}
+
+.card h2, .card h3 {
+    color: var(--primary-purple); /* Dark heading color */
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--accent-purple); /* Subtle purple separator */
+    padding-bottom: 10px;
+}
+
+/* Grid for Aligned Sections (e.g., on Progress, Dashboard pages) */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 25px; /* Space between grid items */
+    margin-top: 20px;
+}
+
+/* Table Styles - Enhanced */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: var(--card-background);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+table th {
+    background-color: var(--light-purple); /* Light purple for table headers */
+    color: var(--primary-purple); /* Primary purple text for headers */
+    font-weight: 600;
+}
+
+table tr:nth-child(even) {
+    background-color: #fafafa; /* Very light gray for alternating rows */
+}
+
+table tr:hover {
+    background-color: var(--accent-purple); /* Light purple on row hover */
+    cursor: pointer;
+}
+
+/* Form Styles - Integrated with Card look */
+.form-section {
+    /* Inherits .card styles */
+}
+
+/* Date navigation for food/exercise/nutrient pages */
+.date-selector {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+    color: var(--text-medium);
+}
+
+.date-selector label {
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.date-selector input[type="date"] {
+    padding: 8px 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.date-selector input[type="date"]:focus {
+    border-color: var(--secondary-purple);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.2);
+    outline: none;
+}
+
+.diet-goal-selector {
+    text-align: center;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.diet-goal-selector input[type="radio"] {
+    margin-right: 5px;
+    transform: scale(1.2); /* Slightly larger radio buttons */
+    accent-color: var(--secondary-purple); /* Purple radio button */
+}
+.diet-goal-selector label {
+    font-weight: bold;
+    color: var(--text-medium);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.meal-list, .workout-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.meal-list li, .workout-list li {
+    background-color: var(--light-purple); /* Light purple background for list items */
+    border-left: 5px solid var(--primary-purple); /* Stronger purple accent border */
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95em;
+    color: var(--text-dark);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.meal-list li:hover, .workout-list li:hover {
+    transform: translateX(5px); /* Slight slide on hover */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.meal-list li.hidden, .workout-list li.hidden {
+    display: none;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    background-color: var(--card-background);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.calendar-nav .nav-arrow {
+    background-color: var(--secondary-purple);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.calendar-nav .nav-arrow:hover {
+    background-color: var(--primary-purple);
+    transform: translateY(-2px);
+}
+
+.calendar-nav span {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin: 0 20px;
+}
+
+/* Nutrient Summary Box - Integrated with Card look */
+.nutrient-summary-box {
+    /* Inherits .card styles */
+    text-align: left; /* Align text left within summary */
+}
+
+.nutrient-summary-box h3 {
+    color: var(--primary-purple);
+}
+
+.nutrient-summary-box p {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text-medium);
+}
+
+.nutrient-summary-box p strong {
+    color: var(--primary-purple);
+}
+
+.daily-log-summary-card ul {
+    max-height: 250px; /* Limit height for scroll */
+    overflow-y: auto;
+    border: 1px solid var(--border-light);
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fcfcfc;
+}
+
+/* Profile and About/Contact sections */
+.profile-card, .about-section, .contact-info, .contact-form-section {
+    @extend .card; /* Inherit general card styles */
+    margin: 25px auto; /* Center these sections */
+    max-width: 800px; /* Max width for content sections */
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--secondary-purple);
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    header nav ul li {
+        margin: 8px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    header nav ul li a {
+        display: block;
+        padding: 5px 0;
+    }
+
+    .nav-buttons {
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .hero h1 {
+        font-size: 2.5em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr; /* Single column on small screens */
+        gap: 20px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .modal-content {
+        padding: 25px;
+    }
+
+    .date-navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .date-navigation .nav-arrow {
+        width: 80%;
+        text-align: center;
+    }
+    .date-selector {
+        margin-bottom: 0;
+    }
+}
