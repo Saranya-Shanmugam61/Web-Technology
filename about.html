@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block container_class %}about-us-container{% endblock %}
+
+{% block content %}
+    <h1>About NutriSync Routiner</h1>
+    <p class="subtitle">Your partner in health and wellness.</p>
+
+    <section class="about-section">
+        <h2>Our Mission</h2>
+        <p>At NutriSync Routiner, our mission is to empower individuals to take control of their health journey by providing intuitive tools for tracking nutrition and exercise. We believe that consistent tracking and insightful data are key to achieving sustainable wellness goals.</p>
+    </section>
+
+    <section class="about-section">
+        <h2>What We Offer</h2>
+        <ul>
+            <li><strong>Personalized Meal Tracking:</strong> Log your meals with detailed nutritional information, helping you stay within your calorie and macronutrient targets.</li>
+            <li><strong>Comprehensive Exercise Logging:</strong> Record your workouts, track duration, calories burned, and monitor your fitness progress over time.</li>
+            <li><strong>Insightful Progress Reports:</strong> Visualize your data with easy-to-understand charts and reports, enabling you to make informed decisions about your diet and fitness.</li>
+            <li><strong>User-Friendly Interface:</strong> A clean and intuitive design makes tracking enjoyable and hassle-free.</li>
+            <li><strong>Secure Data Management:</strong> Your personal health data is stored securely, ensuring privacy and reliability.</li>
+        </ul>
+    </section>
+
+    <section class="about-section">
+        <h2>Our Vision</h2>
+        <p>We envision a world where everyone has the tools and knowledge to lead a healthy and fulfilling life. NutriSync Routiner is continuously evolving to incorporate the latest in health science and technology, providing you with the best possible support for your wellness aspirations.</p>
+    </section>
+
+    <section class="about-section team-section">
+        <h2>Our Team</h2>
+        <div class="team-members">
+            <div class="team-member-card">
+                <img src="static/Varshini.jpg" alt="Team Member 1">
+                <h3>VARSHINI R A</h3>
+                <p>Founder & CEO</p>
+                <p class="member-bio">Passionate about fitness and technology.</p>
+            </div>
+            <div class="team-member-card">
+                <img src="static/saranya.jpg" alt="Team Member 2">
+                <h3>SARANYA S</h3>
+                <p>Founder & CEO</p>
+                <p class="member-bio">A software enthusiast with a keen eye for user experience, Saranya builds the seamless tracking features.</p>
+            </div>
+            {# Add more team members as needed #}
+        </div>
+    </section>
+
+    <style>
+        .about-section {
+            margin-bottom: 40px;
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .about-section h2 {
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .about-section ul {
+            list-style: disc;
+            padding-left: 25px;
+        }
+        .about-section ul li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .team-section {
+            text-align: center;
+        }
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .team-member-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .team-member-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #3498db;
+        }
+        .team-member-card h3 {
+            color: #2c3e50;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .team-member-card p {
+            color: #777;
+            font-size: 0.9em;
+        }
+        .member-bio {
+            font-style: italic;
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
