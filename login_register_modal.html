@@ -1,0 +1,37 @@
+{# This partial is included in base.html #}
+<div class="modal-overlay" id="loginRegisterModalOverlay">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div id="loginForm">
+            <h2>Login</h2>
+            <form method="POST" action="{{ url_for('login_submit') }}">
+                <div class="form-group">
+                    <label for="loginUsername">Username:</label>
+                    <input type="text" id="loginUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p class="switch-form-text">Don't have an account? <a href="#" id="showRegisterLink">Register here</a></p>
+        </div>
+
+        <div id="registerForm" style="display: none;">
+            <h2>Register</h2>
+            <form method="POST" action="{{ url_for('register_submit') }}">
+                <div class="form-group">
+                    <label for="registerUsername">Username:</label>
+                    <input type="text" id="registerUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+            <p class="switch-form-text">Already have an account? <a href="#" id="showLoginLink">Login here</a></p>
+        </div>
+    </div>
+</div>
