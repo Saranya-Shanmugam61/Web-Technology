@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Food Schedule{% endblock %}
+
+{% block container_class %}food-schedule-container{% endblock %}
+
+{% block content %}
+    <h1>Your Healthy Food Schedule</h1>
+    <p class="subtitle">Log your meals and view your personalized food plans.</p>
+
+    <div class="date-selector">
+        <label for="progressDate">Select Date:</label>
+        <input type="date" id="progressDate" name="progressDate" value="{{ selected_date }}" onchange="changeFoodScheduleDate()">
+    </div>
+
+    <div class="diet-goal-selector">
+        <input type="radio" id="dietBulking" name="dietGoalFilter" value="Bulking" checked>
+        <label for="dietBulking">Bulking</label>
+        <input type="radio" id="dietWeightLoss" name="dietGoalFilter" value="Weight Loss">
+        <label for="dietWeightLoss">Weight Loss</label>
+        <input type="radio" id="dietMaintenance" name="dietGoalFilter" value="Maintenance">
+        <label for="dietMaintenance">Maintenance</label>
+        <input type="radio" id="dietAll" name="dietGoalFilter" value="All">
+        <label for="dietAll">All</label>
+    </div>
+
+    <div class="progress-sections">
+        <div class="progress-card meal-log-card">
+            <h3>Morning Meals</h3>
+            <ul class="meal-list" data-meal-time="Morning">
+                {% for entry in food_entries if entry.meal_time == 'Morning' %}
+                    <li data-diet-goal="{{ entry.diet_goal }}">{{ entry.food_item }} ({{ entry.calories }} kcal, P:{{ entry.proteins }}g, C:{{ entry.carbs }}g, F:{{ entry.fats }}g)</li>
+                {% else %}
+                    <li>No morning meals logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Afternoon Meals</h3>
+            <ul class="meal-list" data-meal-time="Afternoon">
+                {% for entry in food_entries if entry.meal_time == 'Afternoon' %}
+                    <li data-diet-goal="{{ entry.diet_goal }}">{{ entry.food_item }} ({{ entry.calories }} kcal, P:{{ entry.proteins }}g, C:{{ entry.carbs }}g, F:{{ entry.fats }}g)</li>
+                {% else %}
+                    <li>No afternoon meals logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Night Meals</h3>
+            <ul class="meal-list" data-meal-time="Night">
+                {% for entry in food_entries if entry.meal_time == 'Night' %}
+                    <li data-diet-goal="{{ entry.diet_goal }}">{{ entry.food_item }} ({{ entry.calories }} kcal, P:{{ entry.proteins }}g, C:{{ entry.carbs }}g, F:{{ entry.fats }}g)</li>
+                {% else %}
+                    <li>No night meals logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Snacks</h3>
+            <ul class="meal-list" data-meal-time="Snack">
+                {% for entry in food_entries if entry.meal_time == 'Snack' %}
+                    <li data-diet-goal="{{ entry.diet_goal }}">{{ entry.food_item }} ({{ entry.calories }} kcal, P:{{ entry.proteins }}g, C:{{ entry.carbs }}g, F:{{ entry.fats }}g)</li>
+                {% else %}
+                    <li>No snacks logged for this date.</li>
+                {% endfor %}
+            </ul>
+
+            <button class="btn btn-small" onclick="openModal('addMealModalOverlay')">Log New Meal</button>
+        </div>
+    </div>
+
+    {# --- Modal for Adding Meal Entry --- #}
+    <div class="modal-overlay" id="addMealModalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('addMealModalOverlay')">&times;</span>
+            <h2>Log New Meal</h2>
+            <form method="POST" action="{{ url_for('add_food_entry') }}">
+                <input type="hidden" name="entry_date" value="{{ selected_date }}">
+                <div class="form-group">
+                    <label for="mealTime">Meal Time:</label>
+                    <select id="mealTime" name="meal_time" required>
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Night">Night</option>
+                        <option value="Snack">Snack</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dietGoal">Diet Goal:</label>
+                    <select id="dietGoal" name="diet_goal">
+                        <option value="Bulking">Bulking</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Maintenance">Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="foodItem">Food Item:</label>
+                    <input type="text" id="foodItem" name="food_item" required>
+                </div>
+                <div class="form-group">
+                    <label for="calories">Calories (kcal):</label>
+                    <input type="number" id="calories" name="calories" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="proteins">Proteins (g):</label>
+                    <input type="number" id="proteins" name="proteins" step="0.1" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="carbs">Carbs (g):</label>
+                    <input type="number" id="carbs" name="carbs" step="0.1" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="fats">Fats (g):</label>
+                    <input type="number" id="fats" name="fats" step="0.1" min="0">
+                </div>
+                <button type="submit" class="btn">Add Meal</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body_extra %}
+    <script>
+        // Function to open a modal (specific to this page)
+        function openModal(modalId) {
+            const modalOverlay = document.getElementById(modalId);
+            if (modalOverlay) {
+                modalOverlay.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Function to close a modal (specific to this page)
+        function closeModal(modalId) {
+            const modalOverlay = document.getElementById(modalId);
+            if (modalOverlay) {
+                modalOverlay.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Function to change the date and reload food schedule data
+        function changeFoodScheduleDate() {
+            const selectedDate = document.getElementById('progressDate').value;
+            window.location.href = "{{ url_for('food_schedule') }}?date=" + selectedDate;
+        }
+
+        // Filter food entries based on selected diet goal
+        document.addEventListener('DOMContentLoaded', function() {
+            const dietGoalRadios = document.querySelectorAll('input[name="dietGoalFilter"]');
+            const mealLists = document.querySelectorAll('.meal-list');
+
+            function filterMeals() {
+                let selectedGoal = document.querySelector('input[name="dietGoalFilter"]:checked').value;
+
+                mealLists.forEach(ul => {
+                    ul.querySelectorAll('li').forEach(li => {
+                        const liDietGoal = li.dataset.dietGoal;
+                        // If selectedGoal is 'All' or the entry's diet goal matches, show it.
+                        // Also show if liDietGoal is undefined/null (e.g., old entries without diet_goal)
+                        if (selectedGoal === 'All' || liDietGoal === selectedGoal || liDietGoal === 'None') {
+                            li.classList.remove('hidden');
+                        } else {
+                            li.classList.add('hidden');
+                        }
+                    });
+                });
+            }
+
+            dietGoalRadios.forEach(radio => {
+                radio.addEventListener('change', filterMeals);
+            });
+
+            // Initial filter on page load
+            filterMeals();
+
+            // Set the date picker to the current selected date from Flask
+            const progressDateInput = document.getElementById('progressDate');
+            if (progressDateInput) {
+                progressDateInput.value = "{{ selected_date }}";
+            }
+        });
+    </script>
+{% endblock %}
